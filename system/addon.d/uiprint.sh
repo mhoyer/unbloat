@@ -11,9 +11,9 @@ OUTFD=$(ps | grep -v "grep" | grep -o -E "updater(.*)" | cut -d " " -f 3);
 
 ui_print() {
   if [ "$OUTFD" != "" ]; then
-    echo -n -e "ui_print $1\n" > /proc/self/fd/$OUTFD
+    echo -n -e "ui_print $*\n" > /proc/self/fd/$OUTFD
     echo -n -e "ui_print\n" > /proc/self/fd/$OUTFD
   fi
 
-  echo $1
+  echo $*
 }
