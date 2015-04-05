@@ -7,6 +7,8 @@
 # Author: Adlx.XDA
 #
 
+source uiprint.sh
+
 . /tmp/backuptool.functions
 
 list_files() {
@@ -33,23 +35,23 @@ EOF
 
 case "$1" in
   backup)
-    echo "STARTING TO BACKUP XPOSED"
+    ui_print "STARTING TO BACKUP XPOSED"
     list_files | while read FILE DUMMY; do
-      echo backup_file $S/"$FILE"
+      ui_print backup_file $S/"$FILE"
       backup_file $S/"$FILE"
     done
     ls -al /tmp
-    echo "ENDING TO BACKUP XPOSED"
+    ui_print "ENDING TO BACKUP XPOSED"
   ;;
   restore)
-    echo "STARTING TO RESTORE XPOSED"
+    ui_print "STARTING TO RESTORE XPOSED"
     list_files | while read FILE REPLACEMENT; do
       R=""
       [ -n "$REPLACEMENT" ] && R="$S/$REPLACEMENT"
       [ -f "$C/$S/$FILE" ] && restore_file $S/"$FILE" "$R"
-      echo $S/$FILE $( ls -alZ $S/$FILE )
+      ui_print $S/$FILE $( ls -alZ $S/$FILE )
     done
-    echo "ENDING TO RESTORE XPOSED"
+    ui_print "ENDING TO RESTORE XPOSED"
   ;;
   pre-backup)
     # Stub
@@ -61,7 +63,7 @@ case "$1" in
     # Stub
   ;;
   post-restore)
-echo "STARTING POST-RESTORE XPOSED"
+ui_print "STARTING POST-RESTORE XPOSED"
 # /system/bin/app_process32_xposed
 chmod 0755 /system/bin/app_process32_xposed
 chown root:shell /system/bin/app_process32_xposed
@@ -110,6 +112,6 @@ chcon u:object_r:system_file:s0 /system/lib/libxposed_art.so
 chmod 0644 /system/xposed.prop
 chown root:root /system/xposed.prop
 chcon u:object_r:system_file:s0 /system/xposed.prop
-echo "DONE POST-RESTORE XPOSED"
+ui_print "DONE POST-RESTORE XPOSED"
   ;;
 esac
